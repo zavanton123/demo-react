@@ -1,18 +1,10 @@
-import {
-  Server,
-  Model,
-  Factory,
-  belongsTo,
-  hasMany,
-  association,
-  RestSerializer,
-} from 'miragejs'
+import {association, belongsTo, Factory, hasMany, Model, RestSerializer, Server,} from 'miragejs'
 
-import { nanoid } from '@reduxjs/toolkit'
+import {nanoid} from '@reduxjs/toolkit'
 
 import faker from 'faker'
-import { sentence, paragraph, article, setRandom } from 'txtgen'
-import { parseISO } from 'date-fns'
+import {article, paragraph, sentence, setRandom} from 'txtgen'
+import {parseISO} from 'date-fns'
 import seedrandom from 'seedrandom'
 
 const IdSerializer = RestSerializer.extend({
@@ -124,7 +116,7 @@ new Server({
         }
       })
 
-      return { notifications }
+      return {notifications}
     })
   },
   models: {
@@ -159,7 +151,7 @@ new Server({
       },
 
       afterCreate(user, server) {
-        server.createList('post', 3, { user })
+        server.createList('post', 3, {user})
       },
     }),
     post: Factory.extend({
