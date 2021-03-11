@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Redirect, Route, Switch,} from 'react-router-do
 
 import {Navbar} from './app/Navbar'
 import {PostsList} from "./features/posts/PostsList";
+import {AddPostForm} from "./features/posts/AppPostForm";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             path="/"
             render={() => (
               <>
+                <AddPostForm />
                 <PostsList/>
               </>
             )}
