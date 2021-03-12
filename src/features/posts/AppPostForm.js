@@ -1,11 +1,15 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {postAdded} from "./postsSlice";
+import {addNewPost} from "./postsSlice";
+import {unwrapResult} from "@reduxjs/toolkit";
 
 export const AddPostForm = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [userId, setUserId] = useState('');
+  const [addRequestStatus, setAddRequestStatus] = useState('idle');
+
+  const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle';
 
   const dispatch = useDispatch();
 
@@ -15,16 +19,22 @@ export const AddPostForm = () => {
   const onContentChanged = event => setContent(event.target.value);
   const onAuthorChanged = event => setUserId(event.target.value);
 
-  const onSavePostClicked = () => {
-    if (title && content) {
-      dispatch(postAdded(title, content, userId))
-
-      setTitle('');
-      setContent('');
+  const onSavePostClicked = async () => {
+    if (canSave) {
+      try {
+        setAddRequestStatus('pending');
+        const resultAction = await dispatch(addNewPost({title, content, user: userId}));
+        unwrapResult(resultAction);
+        setTitle('');
+        setContent('');
+        setUserId('');
+      } catch (err) {
+        console.log(`zavanton - error: ${err}`);
+      } finally {
+        setAddRequestStatus('idle')
+      }
     }
   }
-
-  const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
 
   const userOptions = users.map(user => {
     return (
